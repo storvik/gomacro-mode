@@ -63,6 +63,12 @@ Value will affect responsiveness."
   :type 'number
   :group 'gomacro)
 
+(defcustom gomacro-verbose-eval nil
+  "Enable verbose evaluation of statements.
+
+If set eval functions will print statements to `gomacro-buffer'
+before evaluating them.")
+
 (defcustom gomacro-prompt-regexp "\\(\. \. \. \. +\\)\\|\\(gomacro> \\)"
   "Prompt regexp for `gomacro-run'.")
 
@@ -174,23 +180,16 @@ Removes newlines from STR and replaces them with semicolons."
 
 ;;; GoMacro minor mode
 
-(defun gomacro-eval-region (begin end &optional verbose)
+(defun gomacro-eval-region (begin end)
   "Evaluate selected region between BEGIN and END.
 
-If VERBOSE is set send text to `gomacro-buffer' line by line."
+If `gomacro-verbose-eval' is set text is sent to `gomacro-buffer' line by line."
   (interactive "r")
   (if verbose
       (mapcar 'gomacro-eval (split-string (buffer-substring-no-properties begin end) "\n"))
     (progn
       (gomacro--print-text "Region sent to gomacro REPL" t)
       (gomacro--eval-silent (gomacro--sanitize-string (buffer-substring-no-properties begin end))))))
-
-(defun gomacro-eval-region-verbose (begin end)
-  "Evaluate selected region between BEGIN and END verbosely.
-
-Calls `gomacro-eval-region' with the verbose argument set."
-  (interactive "r")
-  (gomacro-eval-region begin end t))
 
 (defun gomacro-eval-defun ()
   "Evaluate function under or before cursor."
