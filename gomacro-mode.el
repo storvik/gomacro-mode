@@ -185,7 +185,7 @@ Removes newlines from STR and replaces them with semicolons."
 
 If `gomacro-verbose-eval' is set text is sent to `gomacro-buffer' line by line."
   (interactive "r")
-  (if verbose
+  (if gomacro-verbose-eval
       (mapcar 'gomacro-eval (split-string (buffer-substring-no-properties begin end) "\n"))
     (progn
       (gomacro--print-text "Region sent to gomacro REPL" t)
@@ -196,6 +196,15 @@ If `gomacro-verbose-eval' is set text is sent to `gomacro-buffer' line by line."
   (interactive)
   (let ((original-point (point)))
     (mark-defun)
+    (gomacro-eval-region (region-beginning) (region-end))
+    (goto-char original-point)
+    (deactivate-mark)))
+
+(defun gomacro-eval-buffer ()
+  "Evaluate buffer."
+  (interactive)
+  (let ((original-point (point)))
+    (mark-whole-buffer)
     (gomacro-eval-region (region-beginning) (region-end))
     (goto-char original-point)
     (deactivate-mark)))
