@@ -155,7 +155,7 @@ If CANCEL-PROMPT is set new new prompt will be cancelled."
 
 Removes newlines from STR and replaces them with semicolons."
   (replace-regexp-in-string "\\(\n\\|\t\\)" ""
-                            (replace-regexp-in-string "[^{\\|(]\\(\n\\)" ";" str nil nil 1)))
+                            (replace-regexp-in-string "[^{\\|(\\|,]\\(\n\\)" ";" str nil nil 1)))
 
 (defconst gomacro-keywords
   '(":debug" ":env" ":help" ":inspect" ":options" ":package" ":quit" ":unload" ":write")
