@@ -10,6 +10,6 @@ It aims to provide some of the most used features in Slime etc.
 
 - [x] Combine eval region and eval region verbose to one function with config param
 - [x] Add gomacro-eval-buffer
-- [ ] Add gomacro-eval-last-expression (C-x C-e)
-- [ ] Eval region in temporary buffer to avoid view changing
+- [x] Add gomacro-eval-lline
+- [x] Add support for type definitions in eval defun (struct and interface)
 - [ ] Handle package declarations

@@ -1,4 +1,4 @@
-;;; gomacro-mode.el --- Gomacro mode and Go REPL integration for Emacs -*- lexical-binding: t -*-
+;;; gomacro-mode.el --- Gomacro mode and Go REPL integration -*- lexical-binding: t -*-
 
 ;; Copyright © 2020
 
@@ -154,7 +154,8 @@ If CANCEL-PROMPT is set new new prompt will be cancelled."
   "Sanitize create valid Go code from STR.
 
 Removes newlines from STR and replaces them with semicolons."
-  (replace-regexp-in-string "\n" ";" str))
+  (replace-regexp-in-string "\\(\n\\|\t\\)" ""
+                            (replace-regexp-in-string "[^{\\|(]\\(\n\\)" ";" str nil nil 1)))
 
 (defconst gomacro-keywords
   '(":debug" ":env" ":help" ":inspect" ":options" ":package" ":quit" ":unload" ":write")
@@ -166,7 +167,7 @@ Removes newlines from STR and replaces them with semicolons."
   "Additional expressions to highlight in `gomacro-inferior-mode'.")
 
 (define-derived-mode gomacro-inferior-mode comint-mode gomacro-buffer-name
-  "Major mode for `gomacro-run'.
+  "Major mode for `gomacro-run' comint buffer.
 
 \\<gomacro-inferior-mode-map>"
   nil gomacro-buffer-name
@@ -191,29 +192,59 @@ If `gomacro-verbose-eval' is set text is sent to `gomacro-buffer' line by line."
       (gomacro--print-text "Region sent to gomacro REPL" t)
       (gomacro--eval-silent (gomacro--sanitize-string (buffer-substring-no-properties begin end))))))
 
+(defun gomacro-eval-line ()
+  "Evaluate current line."
+  (gomacro-eval-region (line-beginning-position) (line-end-position)))
+
 (defun gomacro-eval-defun ()
-  "Evaluate function under or before cursor."
+  "Evaluate the nearest function, type or import statement.
+
+This function will select whichever function, typer or import statement that is
+nearest to current cursor position and pass it to `gomacro-buffer' REPL."
   (interactive)
-  (let ((original-point (point)))
-    (mark-defun)
-    (gomacro-eval-region (region-beginning) (region-end))
-    (goto-char original-point)
-    (deactivate-mark)))
+  (let ((nearest '(-1 -1))              ; -1 is an invalid position
+        (lst (list (gomacro--get-nearest-function)
+                   (gomacro--get-nearest-type)
+                   (gomacro--get-nearest-import))))
+    (dolist (element lst nearest)
+      (when (car element)
+        (when (> (car element) (car nearest))
+          (setq nearest element))))
+    (if (= (car nearest) -1)
+        (message "No function, type or import found.")
+      (apply 'gomacro-eval-region nearest))))
+
+(defun gomacro--get-nearest-function ()
+  "Find nearest function and return a list (beginning end)."
+  (save-excursion
+    (goto-char (line-end-position))
+    `(,(re-search-backward "^func\ \\(.*\\)+\ [a-zA-z]*\\(.*\\)\ {" nil t)
+      ,(re-search-forward "^}"))))
+
+(defun gomacro--get-nearest-type ()
+  "Find nearest type definition and return a list (beginning end)."
+  (save-excursion
+    (goto-char (line-end-position))
+    `(,(re-search-backward "^type [a-zA-z]* \\(struct\\|interface\\) {" nil t)
+      ,(re-search-forward "^}"))))
+
+(defun gomacro--get-nearest-import ()
+  "Find nearest import statement  and return a list (beginning end)."
+  (save-excursion
+    (goto-char (line-end-position))
+    `(,(re-search-backward "^import (" nil t)
+      ,(re-search-forward "^)"))))
 
 (defun gomacro-eval-buffer ()
-  "Evaluate buffer."
+  "Evaluate entire buffer."
   (interactive)
-  (let ((original-point (point)))
-    (mark-whole-buffer)
-    (gomacro-eval-region (region-beginning) (region-end))
-    (goto-char original-point)
-    (deactivate-mark)))
+  (gomacro-eval-region (point-min) (point-max)))
 
 (defvar gomacro-mode-map
   (let ((map (make-sparse-keymap)))
-    ;; (define-key map (kbd "C-M-x") #'gomacro-eval-defun)
+    (define-key map (kbd "C-M-x") #'gomacro-eval-defun)
     (define-key map (kbd "C-c C-r") #'gomacro-eval-region)
-    ;; (define-key map (kbd "C-x C-e") #'gomacro-eval-last-expression)
+    (define-key map (kbd "C-x C-l") #'gomacro-eval-line)
     map)
   "Gomacro minor mode keymap.")
 
