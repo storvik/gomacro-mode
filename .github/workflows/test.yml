@@ -66,9 +66,9 @@ jobs:
       if: always()  # Run compile even if linting fails.
       run: ./makem.sh -vv --sandbox=$SANDBOX_DIR lint-compile
 
-    #- name: Test
-    #  if: always()  # Run test even if linting fails.
-    #  run: ./makem.sh -vv --sandbox=$SANDBOX_DIR test
+    - name: Test
+      if: always()  # Run test even if linting fails.
+      run: ./makem.sh -vv --sandbox=$SANDBOX_DIR test
 
 # Local Variables:
 # eval: (outline-minor-mode)

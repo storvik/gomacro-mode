@@ -13,8 +13,8 @@ It aims to provide some of the most used features in Slime etc.
 - [x] Combine eval region and eval region verbose to one function with config param
 - [x] Add `gomacro-eval-buffer`
 - [x] Add `gomacro-eval-line`
-- [x] Add support for type definitions in eval defun (struct and interface)
+- [x] Add support for type definitions in eval defun (struct and interface)
 - [x] Remove all comments in `gomacro--sanitize-string`
-- [x] Ensure only one whitespace in `gomacro--sanitize-string`
+- [x] Ensure only one whitespace in `gomacro--sanitize-string`
 - [ ] Handle package declarations
 - [ ] Add some tests
