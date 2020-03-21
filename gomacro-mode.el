@@ -35,7 +35,7 @@
 ;;; Code:
 
 (require 'comint)
-(require 'go-mode)
+;; (require 'go-mode)
 
 (defconst gomacro-buffer "*GoMacro REPL*")
 (defconst gomacro-buffer-name "GoMacro REPL")
@@ -67,10 +67,14 @@ Value will affect responsiveness."
   "Enable verbose evaluation of statements.
 
 If set eval functions will print statements to `gomacro-buffer'
-before evaluating them.")
+before evaluating them."
+  :type 'boolean
+  :group 'gomacro)
 
 (defcustom gomacro-prompt-regexp "\\(\. \. \. \. +\\)\\|\\(gomacro> \\)"
-  "Prompt regexp for `gomacro-run'.")
+  "Prompt regexp for `gomacro-run'."
+  :type 'string
+  :group 'gomacro)
 
 (defun gomacro--get-process ()
   "Get current gomacro process associated with `gomacro-buffer'."
@@ -113,7 +117,7 @@ before evaluating them.")
   (unless (gomacro-running-p)
     (gomacro-run))
   (with-current-buffer gomacro-buffer
-    (while (not (looking-back gomacro-prompt-regexp))
+    (while (not (looking-back gomacro-prompt-regexp nil))
       (goto-char (point-max))
       (sit-for gomacro-wait-timeout))
     (goto-char (point-max))
@@ -138,7 +142,7 @@ If CANCEL-PROMPT is set new new prompt will be cancelled."
   (unless (gomacro-running-p)
     (gomacro-run))
   (with-current-buffer gomacro-buffer
-    (while (not (looking-back gomacro-prompt-regexp))
+    (while (not (looking-back gomacro-prompt-regexp nil))
       (goto-char (point-max))
       (sit-for gomacro-wait-timeout))
     (goto-char (point-max))
@@ -154,8 +158,13 @@ If CANCEL-PROMPT is set new new prompt will be cancelled."
   "Sanitize create valid Go code from STR.
 
 Removes newlines from STR and replaces them with semicolons."
-  (replace-regexp-in-string "\\(\n\\|\t\\)" ""
-                            (replace-regexp-in-string "[^{\\|(\\|,]\\(\n\\)" ";" str nil nil 1)))
+  (replace-regexp-in-string
+   "  +" " "
+   (replace-regexp-in-string
+    "\\(\n\\|\t\\)" ""
+    (replace-regexp-in-string
+     "[^{\\|(\\|,]\\(\n\\)" ";"
+     (replace-regexp-in-string " +//.*" "" str) nil nil 1))))
 
 (defconst gomacro-keywords
   '(":debug" ":env" ":help" ":inspect" ":options" ":package" ":quit" ":unload" ":write")
