@@ -1,5 +1,7 @@
 # gomacro-mode
 
+[![CI](https://github.com/storvik/gomacro-mode/workflows/CI/badge.svg)](https://github.com/storvik/gomacro-mode/actions)
+
 **WORK IN PROGRESS**
 
 This Emacs package provides bindings for working with [Gomacro](https://github.com/cosmos72/gomacro), a read eval print loop for Go.
