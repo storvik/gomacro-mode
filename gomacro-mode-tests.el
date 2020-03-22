@@ -31,22 +31,43 @@
 (require 'gomacro-mode)
 (message "Emacs version: %s" emacs-version)
 
-(defvar gomacro-sanitize-string-struct "type element struct {
+(defvar gomacro--sanitize-string-struct "type element struct {
 	number int    // Comment here
 	str    string // Another comment here
 }")
 
-(defvar gomacro-sanitize-string-interface "type Printer interface {
+(defvar gomacro--sanitize-string-interface "type Printer interface {
 	Print()
 
 	String()
 }")
 
+(defvar gomacro--sanitize-string-function "// Comment goes here
+func (e *element) Print() {
+	fmt.Printf(\"%%d, %%s\n\", e.number, e.str)
+}")
+
+(defvar gomacro--sanitize-string-function-adv "func main() {
+	fmt.Println(\"Hello there from Golang\")
+
+	e := &element{
+		number: 54,      // This is a comment
+		str:    \"Hello\", //This is also comment
+	}
+
+	http.HandleFunc(\"/\", e.HelloServer)
+	http.ListenAndServe(\":8080\", nil)
+}")
+
 (ert-deftest gomacro-sanitize-string()
-  (should (equal (gomacro--sanitize-string gomacro-sanitize-string-struct)
+  (should (equal (gomacro--sanitize-string gomacro--sanitize-string-struct)
                  "type element struct {number int;str string;}"))
-  (should (equal (gomacro--sanitize-string gomacro-sanitize-string-interface)
-                 "type Printer interface {Print();String();}")))
+  (should (equal (gomacro--sanitize-string gomacro--sanitize-string-interface)
+                 "type Printer interface {Print();String();}"))
+  (should (equal (gomacro--sanitize-string gomacro--sanitize-string-function)
+                 "func (e *element) Print() {fmt.Printf(\"%%d, %%s;\", e.number, e.str);}"))
+  (should (equal (gomacro--sanitize-string gomacro--sanitize-string-function-adv)
+                 "func main() {fmt.Println(\"Hello there from Golang\");e := &element{number: 54,str: \"Hello\",};http.HandleFunc(\"/\", e.HelloServer);http.ListenAndServe(\":8080\", nil);}")))
 
 (provide 'gomacro-mode-test)
 ;;; gomacro-mode-test.el ends here
