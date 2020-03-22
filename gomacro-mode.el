@@ -247,7 +247,10 @@ nearest to current cursor position and pass it to `gomacro-buffer' REPL."
 (defun gomacro-eval-buffer ()
   "Evaluate entire buffer."
   (interactive)
-  (gomacro-eval-region (point-min) (point-max)))
+  (save-excursion
+    (goto-char (point-min))
+    (re-search-forward "package .*\n")
+    (gomacro-eval-region (point) (point-max))))
 
 (defvar gomacro-mode-map
   (let ((map (make-sparse-keymap)))
