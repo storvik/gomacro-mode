@@ -16,5 +16,5 @@ It aims to provide some of the most used features in Slime etc.
 - [x] Add support for type definitions in eval defun (struct and interface)
 - [x] Remove all comments in `gomacro--sanitize-string`
 - [x] Ensure only one whitespace in `gomacro--sanitize-string`
+- [x] Add some tests
 - [ ] Handle package declarations
-- [ ] Add some tests
