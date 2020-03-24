@@ -29,8 +29,26 @@
 ;;; Commentary:
 
 ;; This Emacs package provides bindings for working with Gomacro, a
-;; read eval print loop for Go.  It aims to provide some of the most used
-;; features in Slime etc.
+;; read eval print loop for Go.
+;;
+;; Function for interfacing with the gomacro REPL are provided through
+;; the "M-x" interface.  Most important functions to check out are:
+;; - `gomacro-run'
+;; - `gomacro-verbose-toggle'
+;; - `gomacro-eval'
+;; - `gomacro-eval-region'
+;; - `gomacro-eval-line'
+;; - `gomacro-eval-defun'
+;; - `gomacro-eval-buffer'
+;;
+;; When `gomacro-mode' is activated the following keybindings are
+;; defined:
+;; - C-M-x `gomacro-eval-defun'
+;; - C-c C-r `gomacro-eval-region'
+;; - C-c C-l `gomacro-eval-line'
+;; - C-c C-t `gomacro-verbose-toggle'
+;;
+;; For more information, see the readme at https://github.com/storvik/gomacro-mode
 
 ;;; Code:
 
@@ -119,7 +137,7 @@ function."
 
 (defun gomacro-eval (stmt)
   "Evaluate STMT in `gomacro-buffer'."
-  (interactive)
+  (interactive "MEval statement: \n")
   (unless (gomacro-running-p)
     (gomacro-run))
   (with-current-buffer gomacro-buffer
@@ -209,12 +227,13 @@ If `gomacro-verbose-eval' is set text is sent to `gomacro-buffer' line by line."
 
 (defun gomacro-eval-line ()
   "Evaluate current line."
+  (interactive)
   (gomacro-eval-region (line-beginning-position) (line-end-position)))
 
 (defun gomacro-eval-defun ()
   "Evaluate the nearest function, type or import statement.
 
-This function will select whichever function, typer or import statement that is
+This function will select whichever function, type or import statement that is
 nearest to current cursor position and pass it to `gomacro-buffer' REPL."
   (interactive)
   (let ((nearest '(-1 -1))              ; -1 is an invalid position
