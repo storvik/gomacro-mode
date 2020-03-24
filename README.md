@@ -8,24 +8,24 @@ This Emacs package provides bindings for working with [Gomacro](https://github.c
 **Table of Contents**
 
 - [gomacro-mode](#gomacro-mode)
-    - [Todo](#todo)
-    - [Issues](#issues)
-    - [Installation](#installation)
-    - [Usage](#usage)
-        - [Interactive functions](#interactive-functions)
-            - [`gomacro-run`](#gomacro-run)
-            - [`gomacro-verbose-toggle`](#gomacro-verbose-toggle)
-            - [`gomacro-eval (stmt)`](#gomacro-eval-stmt)
-            - [`gomacro-eval-region (begin end)`](#gomacro-eval-region-begin-end)
-            - [`gomacro-eval-line`](#gomacro-eval-line)
-            - [`gomacro-eval-defun`](#gomacro-eval-defun)
-            - [`gomacro-eval-buffer`](#gomacro-eval-buffer)
-        - [Other useful functions](#other-useful-functions)
-            - [`gomacro-running-p`](#gomacro-running-p)
+- [Todo](#todo)
+- [Issues](#issues)
+- [Installation](#installation)
+- [Usage](#usage)
+    - [Interactive functions](#interactive-functions)
+        - [`gomacro-run`](#gomacro-run)
+        - [`gomacro-verbose-toggle`](#gomacro-verbose-toggle)
+        - [`gomacro-eval (stmt)`](#gomacro-eval-stmt)
+        - [`gomacro-eval-region (begin end)`](#gomacro-eval-region-begin-end)
+        - [`gomacro-eval-line`](#gomacro-eval-line)
+        - [`gomacro-eval-defun`](#gomacro-eval-defun)
+        - [`gomacro-eval-buffer`](#gomacro-eval-buffer)
+    - [Other useful functions](#other-useful-functions)
+        - [`gomacro-running-p`](#gomacro-running-p)
 
 <!-- markdown-toc end -->
 
-## Todo
+# Todo
 
 - [ ] Add `gomacro-eval-file` which prompts for file to eval
 - [ ] Add `gomacro-eval-pacakge` which evaluates all files in specified folder
@@ -39,11 +39,11 @@ This Emacs package provides bindings for working with [Gomacro](https://github.c
 - [x] Add some tests
 - [x] Handle package declarations
 
-## Issues
+# Issues
 
 Does not handle multiple packages as all files are evaluated without package header.
 
-## Installation
+# Installation
 
 This is a work in progress and currently not in MELPA.
 Installation can be done using [straight.el](https://github.com/raxod502/straight.el) and [use-package](https://github.com/jwiegley/use-package):
@@ -54,7 +54,7 @@ Installation can be done using [straight.el](https://github.com/raxod502/straigh
     :hook (go-mode . gomacro-mode))
 ```
 
-## Usage
+# Usage
 
 By enabling `gomacro-mode` in buffer with Go source code the following keybindings will be set:
 
@@ -65,49 +65,49 @@ By enabling `gomacro-mode` in buffer with Go source code the following keybindin
 | C-c C-l    | gomacro-eval-line      |
 | C-c C-t    | gomacro-verbose-toggle |
 
-### Interactive functions
+## Interactive functions
 
 The following functions are ment to be used from the `M-x` interface.
 
-#### `gomacro-run`
+### `gomacro-run`
 
 Run an inferior instance of `gomacro` inside Emacs `comint-mode` buffer
 
-#### `gomacro-verbose-toggle`
+### `gomacro-verbose-toggle`
 
 Toggle value of `gomacro-verbose-toggle`.
 When verbose mode is activated everything is sent to gomacro line by line, default behaviour is to only display "Region is sent to gomacro REPL".
 
-#### `gomacro-eval (stmt)`
+### `gomacro-eval (stmt)`
 
 Evaluate `stmt` in gomacro REPL buffer.
 Will prompt for statement if run interactively.
 
-#### `gomacro-eval-region (begin end)`
+### `gomacro-eval-region (begin end)`
 
 Evaluate region between `begin` and `end`.
 Can be run interactively with marked region.
 If `gomacro-verbose-eval` is set region will be sent line by line to gomacro REPL.
 
-#### `gomacro-eval-line`
+### `gomacro-eval-line`
 
 Evaluate current line.
 
-#### `gomacro-eval-defun`
+### `gomacro-eval-defun`
 
 Evaluate the nearest function, type or import statement looking backwards.
 This function will select whichever function, type or import statement that is nearest to current cursor position and pass it to gomacro REPL.
 
-#### `gomacro-eval-buffer`
+### `gomacro-eval-buffer`
 
 Evaluate entire buffer.
 
 > Does not evaluate package statement, hence all buffers sent to gomacro REPL will be in the same namespace.
 
-### Other useful functions
+## Other useful functions
 
 These functions are not ment to run interactively.
 
-#### `gomacro-running-p`
+### `gomacro-running-p`
 
 Check if gomacro REPL is running or not.
