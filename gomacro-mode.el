@@ -6,7 +6,7 @@
 ;; URL: https://github.com/storvik/gomacro-mode
 ;; Version: 0.1.0
 ;; Created: 2019-10-28
-;; Package-Requires: ((emacs "24.4"))
+;; Package-Requires: ((emacs "24.4") (go-mode "1.5.0"))
 ;; Keywords: gomacro repl languages tools processes
 
 ;; This file is NOT part of GNU Emacs.
@@ -35,7 +35,7 @@
 ;;; Code:
 
 (require 'comint)
-;; (require 'go-mode)
+(require 'go-mode)
 
 (defconst gomacro-buffer "*GoMacro REPL*")
 (defconst gomacro-buffer-name "GoMacro REPL")
@@ -180,7 +180,7 @@ Removes newlines from STR and replaces them with semicolons."
 
 \\<gomacro-inferior-mode-map>"
   nil gomacro-buffer-name
-  ;; :syntax-table go-mode-syntax-table ;; not working atm
+  :syntax-table go-mode-syntax-table
   (setq comint-prompt-read-only t)
   (setq comint-prompt-regexp gomacro-prompt-regexp)
   ;; (setq comint-use-prompt-regexp t)
