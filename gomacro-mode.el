@@ -67,7 +67,8 @@ Value will affect responsiveness."
   "Enable verbose evaluation of statements.
 
 If set eval functions will print statements to `gomacro-buffer'
-before evaluating them."
+before evaluating them.  Can be changed by calling `gomacro-verbose-toggle'
+function."
   :type 'boolean
   :group 'gomacro)
 
@@ -106,6 +107,11 @@ before evaluating them."
       (apply 'make-comint-in-buffer gomacro-buffer-name buffer
              gomacro-command nil gomacro-cli-arguments)
       (gomacro-inferior-mode))))
+
+(defun gomacro-verbose-toggle ()
+  "Toggle `gomacro-verbose-eval'."
+  (interactive)
+  (setq gomacro-verbose-eval (not gomacro-verbose-eval)))
 
 (defun gomacro-running-p ()
   "Check if gomacro REPL is running or not."
@@ -256,7 +262,8 @@ nearest to current cursor position and pass it to `gomacro-buffer' REPL."
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-M-x") #'gomacro-eval-defun)
     (define-key map (kbd "C-c C-r") #'gomacro-eval-region)
-    (define-key map (kbd "C-x C-l") #'gomacro-eval-line)
+    (define-key map (kbd "C-c C-l") #'gomacro-eval-line)
+    (define-key map (kbd "C-c C-t") #'gomacro-verbose-toggle)
     map)
   "Gomacro minor mode keymap.")
 
