@@ -277,6 +277,25 @@ nearest to current cursor position and pass it to `gomacro-buffer' REPL."
     (re-search-forward "package .*\n")
     (gomacro-eval-region (point) (point-max))))
 
+(defun gomacro-eval-file (gofile)
+  "Evaluate GOFILE.
+
+If run interactively function will prompt for file."
+  (interactive "fFind file to evaluate: ")
+  (with-temp-buffer
+    (insert-file-contents gofile)
+    (gomacro-eval-buffer)))
+
+(defun gomacro-eval-package (gopath)
+  "Evaluate all files in dir GOPATH.
+
+If run interactively function will prompt for path.  When
+GOPATH is set to filename all other files in given directory
+will be processed too."
+  (interactive "GEnter path to package: ")
+  (mapc 'gomacro-eval-file
+        (directory-files (file-name-directory gopath) t ".go$")))
+
 (defvar gomacro-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-M-x") #'gomacro-eval-defun)
