@@ -104,6 +104,15 @@ Evaluate entire buffer.
 
 > Does not evaluate package statement, hence all buffers sent to gomacro REPL will be in the same namespace.
 
+### `gomacro-eval-file`
+
+Evaluate file, will prompt for file if run interactively.
+
+### `gomacro-eval-package`
+
+Evaluate go package, will prompt for path if run interactively.
+If filename is specified all other go files in same directory will be processed.
+
 ## Other useful functions
 
 These functions are not ment to run interactively.
