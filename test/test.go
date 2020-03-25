@@ -29,6 +29,10 @@ func anotherFunction(a, b int) int {
 	return c + a + b
 }
 
+func (e *element) HelloServer(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello returning string, %s", e.String())
+}
+
 func main() {
 	fmt.Println("Hello there from Golang")
 
@@ -39,8 +43,4 @@ func main() {
 
 	http.HandleFunc("/", e.HelloServer)
 	http.ListenAndServe(":8080", nil)
-}
-
-func (e *element) HelloServer(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello returning string, %s", e.String())
 }
