@@ -3,6 +3,8 @@
 [![CI](https://github.com/storvik/gomacro-mode/workflows/CI/badge.svg)](https://github.com/storvik/gomacro-mode/actions)
 
 This Emacs package provides bindings for working with [Gomacro](https://github.com/cosmos72/gomacro), a read eval print loop for Go.
+Gomacro installation instuctions can be found in the gomacro repo.
+Thanks to the gomacro [author](https://github.com/cosmos72)!
 
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
@@ -29,9 +31,9 @@ This Emacs package provides bindings for working with [Gomacro](https://github.c
 
 # Todo
 
-- [ ] Add `gomacro-eval-file` which prompts for file to eval
-- [ ] Add `gomacro-eval-pacakge` which evaluates all files in specified folder
 - [ ] Look into using `go--build-font-lock-keywords`to to syntax highlightning in gomacro buffer
+- [x] Add `gomacro-eval-file` which prompts for file to eval
+- [x] Add `gomacro-eval-pacakge` which evaluates all files in specified folder
 - [x] Combine eval region and eval region verbose to one function with config param
 - [x] Add `gomacro-eval-buffer`
 - [x] Add `gomacro-eval-line`
