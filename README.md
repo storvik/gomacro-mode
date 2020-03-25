@@ -20,6 +20,8 @@ This Emacs package provides bindings for working with [Gomacro](https://github.c
         - [`gomacro-eval-line`](#gomacro-eval-line)
         - [`gomacro-eval-defun`](#gomacro-eval-defun)
         - [`gomacro-eval-buffer`](#gomacro-eval-buffer)
+        - [`gomacro-eval-file`](#gomacro-eval-file)
+        - [`gomacro-eval-package`](#gomacro-eval-package)
     - [Other useful functions](#other-useful-functions)
         - [`gomacro-running-p`](#gomacro-running-p)
 
