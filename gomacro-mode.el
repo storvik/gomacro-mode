@@ -1,6 +1,6 @@
 ;;; gomacro-mode.el --- Gomacro mode and Go REPL integration -*- lexical-binding: t -*-
 
-;; Copyright © 2020
+;; Copyright © 2020 Petter Storvik
 
 ;; Author: Petter Storvik
 ;; URL: https://github.com/storvik/gomacro-mode
@@ -221,9 +221,8 @@ If `gomacro-verbose-eval' is set text is sent to `gomacro-buffer' line by line."
   (interactive "r")
   (if gomacro-verbose-eval
       (mapcar 'gomacro-eval (split-string (buffer-substring-no-properties begin end) "\n"))
-    (progn
-      (gomacro--print-text "Region sent to gomacro REPL" t)
-      (gomacro--eval-silent (gomacro--sanitize-string (buffer-substring-no-properties begin end))))))
+    (gomacro--print-text "Region sent to gomacro REPL" t)
+    (gomacro--eval-silent (gomacro--sanitize-string (buffer-substring-no-properties begin end)))))
 
 (defun gomacro-eval-line ()
   "Evaluate current line."
