@@ -50,13 +50,11 @@ Does not handle multiple packages as all files are evaluated without package hea
 
 # Installation
 
-This is a work in progress and currently not in MELPA.
-Installation can be done using [straight.el](https://github.com/raxod502/straight.el) and [use-package](https://github.com/jwiegley/use-package):
+Installation can be done using [use-package](https://github.com/jwiegley/use-package):
 
 ``` emacs-lisp
 (use-package gomacro-mode
-    :straight (:host github :repo "storvik/gomacro-mode")
-    :hook (go-mode . gomacro-mode))
+  :hook (go-mode . gomacro-mode))
 ```
 
 # Usage
